@@ -56,7 +56,9 @@ module.exports = grammar({
 
     ExprLit: ($) => $.Lit,
 
-    Lit: ($) => choice($.lit_int, $.lit_float, $.lit_str, $.lit_bool),
+    Lit: ($) =>
+      choice($.lit_int, $.lit_float, $.lit_str, $.lit_bool, $.LitUnit),
+    LitUnit: ($) => seq("(", ")"),
 
     // TODO: unsure
     ExprDeclareVar: ($) =>
@@ -171,7 +173,13 @@ module.exports = grammar({
         ")",
       ),
 
-    ExprClosure: ($) => prec.right(2, seq($.ParamList, $.Expr)),
+    ExprClosure: ($) => prec.right(2, seq($.ClosureParamList, $.Expr)),
+    ClosureParamList: ($) =>
+      seq(
+        "|",
+        optional(seq($.Param, repeat(seq(",", $.Param)), optional(","))),
+        "|",
+      ),
 
     ParamList: ($) =>
       choice(
@@ -179,11 +187,6 @@ module.exports = grammar({
           "(",
           optional(seq($.Param, repeat(seq(",", $.Param)), optional(","))),
           ")",
-        ),
-        seq(
-          "|",
-          optional(seq($.Param, repeat(seq(",", $.Param)), optional(","))),
-          "|",
         ),
       ),
 
@@ -230,11 +233,12 @@ module.exports = grammar({
 
     ExprReturn: ($) => prec.right(1, seq("return", optional($.Expr))),
 
+    FnDeclName: ($) => seq($.ident, repeat(seq(".", $.ident))),
     ExprFn: ($) =>
       seq(
         optional("private"),
         "fn",
-        field("fn_name", $.ident),
+        field("fn_name", $.FnDeclName),
         field("params", $.ParamList),
         field("body", $.ExprBlock),
       ),
@@ -408,6 +412,6 @@ module.exports = grammar({
       choice($._lit_str_dquote, $._lit_str_squote, $._lit_str_backticks),
     lit_bool: ($) => choice("true", "false"),
     comment_line_doc: ($) => /\/\/[^\n]*/,
-    comment_block_doc: ($) => /\/\*\*[^*]*\*+(?:[^/*][^*]*\*+)*\//,
+    comment_block_doc: ($) => /\/\*[^*]*\*+(?:[^/*][^*]*\*+)*\//,
   },
 });

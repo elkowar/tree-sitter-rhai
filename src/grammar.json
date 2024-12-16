@@ -277,6 +277,23 @@
         {
           "type": "SYMBOL",
           "name": "lit_bool"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "LitUnit"
+        }
+      ]
+    },
+    "LitUnit": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "("
+        },
+        {
+          "type": "STRING",
+          "value": ")"
         }
       ]
     },
@@ -889,7 +906,7 @@
         "members": [
           {
             "type": "SYMBOL",
-            "name": "ParamList"
+            "name": "ClosureParamList"
           },
           {
             "type": "SYMBOL",
@@ -897,6 +914,64 @@
           }
         ]
       }
+    },
+    "ClosureParamList": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "|"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "Param"
+                },
+                {
+                  "type": "REPEAT",
+                  "content": {
+                    "type": "SEQ",
+                    "members": [
+                      {
+                        "type": "STRING",
+                        "value": ","
+                      },
+                      {
+                        "type": "SYMBOL",
+                        "name": "Param"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "STRING",
+                      "value": ","
+                    },
+                    {
+                      "type": "BLANK"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "STRING",
+          "value": "|"
+        }
+      ]
     },
     "ParamList": {
       "type": "CHOICE",
@@ -956,64 +1031,6 @@
             {
               "type": "STRING",
               "value": ")"
-            }
-          ]
-        },
-        {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "STRING",
-              "value": "|"
-            },
-            {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "SEQ",
-                  "members": [
-                    {
-                      "type": "SYMBOL",
-                      "name": "Param"
-                    },
-                    {
-                      "type": "REPEAT",
-                      "content": {
-                        "type": "SEQ",
-                        "members": [
-                          {
-                            "type": "STRING",
-                            "value": ","
-                          },
-                          {
-                            "type": "SYMBOL",
-                            "name": "Param"
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "type": "CHOICE",
-                      "members": [
-                        {
-                          "type": "STRING",
-                          "value": ","
-                        },
-                        {
-                          "type": "BLANK"
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "type": "BLANK"
-                }
-              ]
-            },
-            {
-              "type": "STRING",
-              "value": "|"
             }
           ]
         }
@@ -1361,6 +1378,31 @@
         ]
       }
     },
+    "FnDeclName": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "ident"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "."
+              },
+              {
+                "type": "SYMBOL",
+                "name": "ident"
+              }
+            ]
+          }
+        }
+      ]
+    },
     "ExprFn": {
       "type": "SEQ",
       "members": [
@@ -1385,7 +1427,7 @@
           "name": "fn_name",
           "content": {
             "type": "SYMBOL",
-            "name": "ident"
+            "name": "FnDeclName"
           }
         },
         {
@@ -2686,7 +2728,7 @@
     },
     "comment_block_doc": {
       "type": "PATTERN",
-      "value": "\\/\\*\\*[^*]*\\*+(?:[^/*][^*]*\\*+)*\\/"
+      "value": "\\/\\*[^*]*\\*+(?:[^/*][^*]*\\*+)*\\/"
     }
   },
   "extras": [

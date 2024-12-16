@@ -15,7 +15,7 @@
 (lit_str) @string
 (lit_int) @number
 (lit_float) @number
-(Doc) @comment.doc
+[(comment_line_doc) (comment_block_doc)] @comment.doc
 
 (binop) @operator
 
@@ -27,4 +27,4 @@
 (ident) @variable
 
 (ExprCall fn_name: (Expr) @function.name)
-(ExprFn fn_name: (ident) @function)
+(ExprFn fn_name: (FnDeclName) @function)

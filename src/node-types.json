@@ -20,6 +20,21 @@
     }
   },
   {
+    "type": "ClosureParamList",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "Param",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "Doc",
     "named": true,
     "fields": {},
@@ -277,11 +292,11 @@
       "required": true,
       "types": [
         {
-          "type": "Expr",
+          "type": "ClosureParamList",
           "named": true
         },
         {
-          "type": "ParamList",
+          "type": "Expr",
           "named": true
         }
       ]
@@ -381,7 +396,7 @@
         "required": true,
         "types": [
           {
-            "type": "ident",
+            "type": "FnDeclName",
             "named": true
           }
         ]
@@ -671,6 +686,21 @@
     }
   },
   {
+    "type": "FnDeclName",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "ident",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "Item",
     "named": true,
     "fields": {},
@@ -698,6 +728,10 @@
       "required": true,
       "types": [
         {
+          "type": "LitUnit",
+          "named": true
+        },
+        {
           "type": "lit_bool",
           "named": true
         },
@@ -715,6 +749,11 @@
         }
       ]
     }
+  },
+  {
+    "type": "LitUnit",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "ObjectField",
