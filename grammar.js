@@ -406,7 +406,7 @@ module.exports = grammar({
     // Tokens
 
     ident: ($) => /[a-zA-Z_][a-zA-Z0-9_]*/,
-    lit_int: ($) => /\d+/,
+    lit_int: ($) => /\d+(_\d\d\d)*/,
     lit_float: ($) => /\d+\.\d+/,
     lit_str: ($) =>
       choice($._lit_str_dquote, $._lit_str_squote, $._lit_str_backticks),

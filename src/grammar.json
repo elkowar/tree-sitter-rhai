@@ -2686,7 +2686,7 @@
     },
     "lit_int": {
       "type": "PATTERN",
-      "value": "\\d+"
+      "value": "\\d+(_\\d\\d\\d)*"
     },
     "lit_float": {
       "type": "PATTERN",
