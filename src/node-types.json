@@ -1,0 +1,1458 @@
+[
+  {
+    "type": "ArgList",
+    "named": true,
+    "fields": {
+      "args": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": "Expr",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "Doc",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "comment_block_doc",
+          "named": true
+        },
+        {
+          "type": "comment_line_doc",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ExportIdent",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "ident",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ExportTarget",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ExportIdent",
+          "named": true
+        },
+        {
+          "type": "ExprConst",
+          "named": true
+        },
+        {
+          "type": "ExprLet",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "Expr",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ExprArray",
+          "named": true
+        },
+        {
+          "type": "ExprBinary",
+          "named": true
+        },
+        {
+          "type": "ExprBlock",
+          "named": true
+        },
+        {
+          "type": "ExprBreak",
+          "named": true
+        },
+        {
+          "type": "ExprCall",
+          "named": true
+        },
+        {
+          "type": "ExprClosure",
+          "named": true
+        },
+        {
+          "type": "ExprConst",
+          "named": true
+        },
+        {
+          "type": "ExprContinue",
+          "named": true
+        },
+        {
+          "type": "ExprDotAccess",
+          "named": true
+        },
+        {
+          "type": "ExprExport",
+          "named": true
+        },
+        {
+          "type": "ExprFn",
+          "named": true
+        },
+        {
+          "type": "ExprFor",
+          "named": true
+        },
+        {
+          "type": "ExprIdent",
+          "named": true
+        },
+        {
+          "type": "ExprIf",
+          "named": true
+        },
+        {
+          "type": "ExprImport",
+          "named": true
+        },
+        {
+          "type": "ExprIndex",
+          "named": true
+        },
+        {
+          "type": "ExprLet",
+          "named": true
+        },
+        {
+          "type": "ExprLit",
+          "named": true
+        },
+        {
+          "type": "ExprLoop",
+          "named": true
+        },
+        {
+          "type": "ExprObject",
+          "named": true
+        },
+        {
+          "type": "ExprParen",
+          "named": true
+        },
+        {
+          "type": "ExprPath",
+          "named": true
+        },
+        {
+          "type": "ExprReturn",
+          "named": true
+        },
+        {
+          "type": "ExprSwitch",
+          "named": true
+        },
+        {
+          "type": "ExprThrow",
+          "named": true
+        },
+        {
+          "type": "ExprTry",
+          "named": true
+        },
+        {
+          "type": "ExprUnary",
+          "named": true
+        },
+        {
+          "type": "ExprWhile",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ExprArray",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "Expr",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ExprBinary",
+    "named": true,
+    "fields": {
+      "left": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "Expr",
+            "named": true
+          }
+        ]
+      },
+      "operator": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "!=",
+            "named": false
+          },
+          {
+            "type": "%",
+            "named": false
+          },
+          {
+            "type": "%=",
+            "named": false
+          },
+          {
+            "type": "&",
+            "named": false
+          },
+          {
+            "type": "&&",
+            "named": false
+          },
+          {
+            "type": "&=",
+            "named": false
+          },
+          {
+            "type": "*",
+            "named": false
+          },
+          {
+            "type": "**",
+            "named": false
+          },
+          {
+            "type": "**=",
+            "named": false
+          },
+          {
+            "type": "*=",
+            "named": false
+          },
+          {
+            "type": "+",
+            "named": false
+          },
+          {
+            "type": "+=",
+            "named": false
+          },
+          {
+            "type": "-",
+            "named": false
+          },
+          {
+            "type": "-=",
+            "named": false
+          },
+          {
+            "type": "..",
+            "named": false
+          },
+          {
+            "type": "..=",
+            "named": false
+          },
+          {
+            "type": "/",
+            "named": false
+          },
+          {
+            "type": "/=",
+            "named": false
+          },
+          {
+            "type": "<",
+            "named": false
+          },
+          {
+            "type": "<<",
+            "named": false
+          },
+          {
+            "type": "<<=",
+            "named": false
+          },
+          {
+            "type": "<=",
+            "named": false
+          },
+          {
+            "type": "=",
+            "named": false
+          },
+          {
+            "type": "==",
+            "named": false
+          },
+          {
+            "type": ">",
+            "named": false
+          },
+          {
+            "type": ">=",
+            "named": false
+          },
+          {
+            "type": ">>",
+            "named": false
+          },
+          {
+            "type": ">>=",
+            "named": false
+          },
+          {
+            "type": "??",
+            "named": false
+          },
+          {
+            "type": "^",
+            "named": false
+          },
+          {
+            "type": "^=",
+            "named": false
+          },
+          {
+            "type": "|",
+            "named": false
+          },
+          {
+            "type": "|=",
+            "named": false
+          },
+          {
+            "type": "||",
+            "named": false
+          }
+        ]
+      },
+      "right": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "Expr",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "ExprBlock",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "Stmt",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ExprBreak",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "Expr",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ExprCall",
+    "named": true,
+    "fields": {
+      "fn_name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "Expr",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ArgList",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ExprClosure",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "Expr",
+          "named": true
+        },
+        {
+          "type": "ParamList",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ExprConst",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "ident",
+            "named": true
+          }
+        ]
+      },
+      "value": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "Expr",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "ExprDotAccess",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "Expr",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ExprExport",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ExportTarget",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ExprFn",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "ExprBlock",
+          "named": true
+        },
+        {
+          "type": "ParamList",
+          "named": true
+        },
+        {
+          "type": "ident",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ExprFor",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "Expr",
+          "named": true
+        },
+        {
+          "type": "ExprBlock",
+          "named": true
+        },
+        {
+          "type": "Pat",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ExprIdent",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ident",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ExprIf",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "Expr",
+          "named": true
+        },
+        {
+          "type": "ExprBlock",
+          "named": true
+        },
+        {
+          "type": "ExprIf",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ExprImport",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "Expr",
+          "named": true
+        },
+        {
+          "type": "ident",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ExprIndex",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "Expr",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ExprLet",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "ident",
+            "named": true
+          }
+        ]
+      },
+      "value": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "Expr",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "ExprLit",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "Lit",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ExprLoop",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ExprBlock",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ExprObject",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "ObjectField",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ExprParen",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "Expr",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ExprPath",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "Path",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ExprReturn",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "Expr",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ExprSwitch",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "Expr",
+          "named": true
+        },
+        {
+          "type": "SwitchArmList",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ExprThrow",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "Expr",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ExprTry",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "ExprBlock",
+          "named": true
+        },
+        {
+          "type": "ParamList",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ExprUnary",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "Expr",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ExprWhile",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "Expr",
+          "named": true
+        },
+        {
+          "type": "ExprBlock",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "Item",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "Doc",
+          "named": true
+        },
+        {
+          "type": "Expr",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "Lit",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "LitStrTemplate",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
+          "named": true
+        },
+        {
+          "type": "lit_char",
+          "named": true
+        },
+        {
+          "type": "lit_float",
+          "named": true
+        },
+        {
+          "type": "lit_int",
+          "named": true
+        },
+        {
+          "type": "lit_str",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "LitStrTemplate",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "LitStrTemplateInterpolation",
+          "named": true
+        },
+        {
+          "type": "lit_str",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "LitStrTemplateInterpolation",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "Stmt",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ObjectField",
+    "named": true,
+    "fields": {
+      "key": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "ident",
+            "named": true
+          },
+          {
+            "type": "lit_str",
+            "named": true
+          }
+        ]
+      },
+      "value": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "Expr",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "Param",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ident",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ParamList",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "Param",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "Pat",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "PatIdent",
+          "named": true
+        },
+        {
+          "type": "PatTuple",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "PatIdent",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ident",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "PatTuple",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "ident",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "Path",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "ident",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "Rhai",
+    "named": true,
+    "root": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "Stmt",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "Stmt",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "Item",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "SwitchArm",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "Expr",
+          "named": true
+        },
+        {
+          "type": "SwitchArmCondition",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "SwitchArmCondition",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "Expr",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "SwitchArmList",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "SwitchArm",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "lit_bool",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "!",
+    "named": false
+  },
+  {
+    "type": "!=",
+    "named": false
+  },
+  {
+    "type": "#{",
+    "named": false
+  },
+  {
+    "type": "${",
+    "named": false
+  },
+  {
+    "type": "%",
+    "named": false
+  },
+  {
+    "type": "%=",
+    "named": false
+  },
+  {
+    "type": "&",
+    "named": false
+  },
+  {
+    "type": "&&",
+    "named": false
+  },
+  {
+    "type": "&=",
+    "named": false
+  },
+  {
+    "type": "(",
+    "named": false
+  },
+  {
+    "type": ")",
+    "named": false
+  },
+  {
+    "type": "*",
+    "named": false
+  },
+  {
+    "type": "**",
+    "named": false
+  },
+  {
+    "type": "**=",
+    "named": false
+  },
+  {
+    "type": "*=",
+    "named": false
+  },
+  {
+    "type": "+",
+    "named": false
+  },
+  {
+    "type": "+=",
+    "named": false
+  },
+  {
+    "type": ",",
+    "named": false
+  },
+  {
+    "type": "-",
+    "named": false
+  },
+  {
+    "type": "-=",
+    "named": false
+  },
+  {
+    "type": ".",
+    "named": false
+  },
+  {
+    "type": "..",
+    "named": false
+  },
+  {
+    "type": "..=",
+    "named": false
+  },
+  {
+    "type": "/",
+    "named": false
+  },
+  {
+    "type": "/=",
+    "named": false
+  },
+  {
+    "type": ":",
+    "named": false
+  },
+  {
+    "type": "::",
+    "named": false
+  },
+  {
+    "type": ";",
+    "named": false
+  },
+  {
+    "type": "<",
+    "named": false
+  },
+  {
+    "type": "<<",
+    "named": false
+  },
+  {
+    "type": "<<=",
+    "named": false
+  },
+  {
+    "type": "<=",
+    "named": false
+  },
+  {
+    "type": "=",
+    "named": false
+  },
+  {
+    "type": "==",
+    "named": false
+  },
+  {
+    "type": "=>",
+    "named": false
+  },
+  {
+    "type": ">",
+    "named": false
+  },
+  {
+    "type": ">=",
+    "named": false
+  },
+  {
+    "type": ">>",
+    "named": false
+  },
+  {
+    "type": ">>=",
+    "named": false
+  },
+  {
+    "type": "?.",
+    "named": false
+  },
+  {
+    "type": "??",
+    "named": false
+  },
+  {
+    "type": "?[",
+    "named": false
+  },
+  {
+    "type": "ExprContinue",
+    "named": true
+  },
+  {
+    "type": "[",
+    "named": false
+  },
+  {
+    "type": "]",
+    "named": false
+  },
+  {
+    "type": "^",
+    "named": false
+  },
+  {
+    "type": "^=",
+    "named": false
+  },
+  {
+    "type": "_",
+    "named": false
+  },
+  {
+    "type": "as",
+    "named": false
+  },
+  {
+    "type": "break",
+    "named": false
+  },
+  {
+    "type": "catch",
+    "named": false
+  },
+  {
+    "type": "comment_block_doc",
+    "named": true
+  },
+  {
+    "type": "comment_line_doc",
+    "named": true
+  },
+  {
+    "type": "const",
+    "named": false
+  },
+  {
+    "type": "else",
+    "named": false
+  },
+  {
+    "type": "export",
+    "named": false
+  },
+  {
+    "type": "false",
+    "named": false
+  },
+  {
+    "type": "fn",
+    "named": false
+  },
+  {
+    "type": "for",
+    "named": false
+  },
+  {
+    "type": "ident",
+    "named": true
+  },
+  {
+    "type": "if",
+    "named": false
+  },
+  {
+    "type": "import",
+    "named": false
+  },
+  {
+    "type": "in",
+    "named": false
+  },
+  {
+    "type": "let",
+    "named": false
+  },
+  {
+    "type": "lit_char",
+    "named": true
+  },
+  {
+    "type": "lit_float",
+    "named": true
+  },
+  {
+    "type": "lit_int",
+    "named": true
+  },
+  {
+    "type": "lit_str",
+    "named": true
+  },
+  {
+    "type": "loop",
+    "named": false
+  },
+  {
+    "type": "private",
+    "named": false
+  },
+  {
+    "type": "return",
+    "named": false
+  },
+  {
+    "type": "switch",
+    "named": false
+  },
+  {
+    "type": "throw",
+    "named": false
+  },
+  {
+    "type": "true",
+    "named": false
+  },
+  {
+    "type": "try",
+    "named": false
+  },
+  {
+    "type": "while",
+    "named": false
+  },
+  {
+    "type": "{",
+    "named": false
+  },
+  {
+    "type": "|",
+    "named": false
+  },
+  {
+    "type": "|=",
+    "named": false
+  },
+  {
+    "type": "||",
+    "named": false
+  },
+  {
+    "type": "}",
+    "named": false
+  }
+]
