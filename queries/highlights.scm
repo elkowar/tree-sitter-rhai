@@ -1,27 +1,15 @@
+(str_template_expr ["${" "}"] @punctuation.bracket)
+(SwitchArm (Expr) "=>" @punctuation.delimiter (Expr))
+
 ";" @punctuation
 "," @punctuation.delimiter
-"=>" @punctuation.delimiter
-"(" @punctuation.bracket
-")" @punctuation.bracket
-"{" @punctuation.bracket
-"}" @punctuation.bracket
-"[" @punctuation.bracket
-"]" @punctuation.bracket
-"#{" @punctuation.bracket
+
+[ "(" ")" "{" "}" "[" "]" "#{" ] @punctuation.bracket
 
 
-[
-  "return"
-  "let"
-  "const"
-  "export"
-  "if"
-  "else"
-  "fn"
-  "private"
-  "import"
-  "as"
-] @keyword
+
+["return" "let" "const" "export" "if" "else" "fn" "private" "import" "as"] @keyword
+[".." "..=" "||" "&&" "==" "!=" "<=" ">=" "<" ">" "+" "*" "**" "-" "/" "%" "<<" ">>" "^" "|" "&" "=" "+=" "/=" "*=" "**=" "%=" ">>=" "<<=" "-=" "|=" "&=" "^=" "??"] @operator
 
 (lit_bool) @boolean
 (lit_str) @string
@@ -31,9 +19,6 @@
 
 (binop) @operator
 
-; (ObjectField
-;   key: [(ident) (lit_str)] @property
-;   value: (Expr))
 (ObjectField
   key: [(ident) (lit_str)] @property
   value: (Expr))
@@ -43,4 +28,3 @@
 
 (ExprCall fn_name: (Expr) @function.name)
 (ExprFn fn_name: (ident) @function)
-; (ExprObject ["#{" "}"]) @constructor

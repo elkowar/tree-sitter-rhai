@@ -39,44 +39,6 @@
     }
   },
   {
-    "type": "ExportIdent",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "ident",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "ExportTarget",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "ExportIdent",
-          "named": true
-        },
-        {
-          "type": "ExprConst",
-          "named": true
-        },
-        {
-          "type": "ExprLet",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "Expr",
     "named": true,
     "fields": {},
@@ -109,11 +71,15 @@
           "named": true
         },
         {
-          "type": "ExprConst",
+          "type": "ExprContinue",
           "named": true
         },
         {
-          "type": "ExprContinue",
+          "type": "ExprDeclareVar",
+          "named": true
+        },
+        {
+          "type": "ExprDo",
           "named": true
         },
         {
@@ -121,7 +87,7 @@
           "named": true
         },
         {
-          "type": "ExprExport",
+          "type": "ExprExportIdent",
           "named": true
         },
         {
@@ -146,10 +112,6 @@
         },
         {
           "type": "ExprIndex",
-          "named": true
-        },
-        {
-          "type": "ExprLet",
           "named": true
         },
         {
@@ -326,7 +288,7 @@
     }
   },
   {
-    "type": "ExprConst",
+    "type": "ExprDeclareVar",
     "named": true,
     "fields": {
       "name": {
@@ -341,7 +303,7 @@
       },
       "value": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "Expr",
@@ -349,6 +311,25 @@
           }
         ]
       }
+    }
+  },
+  {
+    "type": "ExprDo",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "Expr",
+          "named": true
+        },
+        {
+          "type": "ExprBlock",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -367,15 +348,15 @@
     }
   },
   {
-    "type": "ExprExport",
+    "type": "ExprExportIdent",
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
-          "type": "ExportTarget",
+          "type": "ident",
           "named": true
         }
       ]
@@ -385,6 +366,16 @@
     "type": "ExprFn",
     "named": true,
     "fields": {
+      "body": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "ExprBlock",
+            "named": true
+          }
+        ]
+      },
       "fn_name": {
         "multiple": false,
         "required": true,
@@ -394,21 +385,17 @@
             "named": true
           }
         ]
+      },
+      "params": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "ParamList",
+            "named": true
+          }
+        ]
       }
-    },
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "ExprBlock",
-          "named": true
-        },
-        {
-          "type": "ParamList",
-          "named": true
-        }
-      ]
     }
   },
   {
@@ -504,32 +491,6 @@
           "named": true
         }
       ]
-    }
-  },
-  {
-    "type": "ExprLet",
-    "named": true,
-    "fields": {
-      "name": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "ident",
-            "named": true
-          }
-        ]
-      },
-      "value": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "Expr",
-            "named": true
-          }
-        ]
-      }
     }
   },
   {
@@ -737,15 +698,7 @@
       "required": true,
       "types": [
         {
-          "type": "LitStrTemplate",
-          "named": true
-        },
-        {
           "type": "lit_bool",
-          "named": true
-        },
-        {
-          "type": "lit_char",
           "named": true
         },
         {
@@ -758,40 +711,6 @@
         },
         {
           "type": "lit_str",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "LitStrTemplate",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "LitStrTemplateInterpolation",
-          "named": true
-        },
-        {
-          "type": "lit_str",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "LitStrTemplateInterpolation",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "Stmt",
           "named": true
         }
       ]
@@ -1012,6 +931,45 @@
     "fields": {}
   },
   {
+    "type": "lit_str",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "str_template_expr",
+          "named": true
+        },
+        {
+          "type": "str_template_str_content",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "str_template_expr",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "Stmt",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "str_template_str_content",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "!",
     "named": false
   },
@@ -1020,7 +978,15 @@
     "named": false
   },
   {
+    "type": "\"",
+    "named": false
+  },
+  {
     "type": "#{",
+    "named": false
+  },
+  {
+    "type": "$",
     "named": false
   },
   {
@@ -1188,6 +1154,10 @@
     "named": false
   },
   {
+    "type": "\\\n",
+    "named": false
+  },
+  {
     "type": "]",
     "named": false
   },
@@ -1201,6 +1171,10 @@
   },
   {
     "type": "_",
+    "named": false
+  },
+  {
+    "type": "`",
     "named": false
   },
   {
@@ -1225,6 +1199,10 @@
   },
   {
     "type": "const",
+    "named": false
+  },
+  {
+    "type": "do",
     "named": false
   },
   {
@@ -1268,19 +1246,11 @@
     "named": false
   },
   {
-    "type": "lit_char",
-    "named": true
-  },
-  {
     "type": "lit_float",
     "named": true
   },
   {
     "type": "lit_int",
-    "named": true
-  },
-  {
-    "type": "lit_str",
     "named": true
   },
   {
@@ -1309,6 +1279,10 @@
   },
   {
     "type": "try",
+    "named": false
+  },
+  {
+    "type": "until",
     "named": false
   },
   {

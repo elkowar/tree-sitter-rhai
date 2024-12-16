@@ -8,6 +8,7 @@ module.exports = grammar({
 
   rules: {
     Rhai: ($) => seq(repeat($.Stmt)),
+    RhaiDef: ($) => seq($.DefModuleDecl, repeat($.DefStmt)),
 
     Item: ($) => prec(2, seq(repeat($.Doc), $.Expr)),
 
@@ -17,15 +18,14 @@ module.exports = grammar({
 
     Expr: ($) =>
       choice(
+        $.ExprDotAccess,
         $.ExprIdent,
         $.ExprPath,
         $.ExprLit,
-        $.ExprLet,
-        $.ExprConst,
+        $.ExprDeclareVar,
         $.ExprBlock,
         $.ExprUnary,
         $.ExprBinary,
-        $.ExprDotAccess,
         $.ExprParen,
         $.ExprArray,
         $.ExprIndex,
@@ -36,12 +36,13 @@ module.exports = grammar({
         $.ExprLoop,
         $.ExprFor,
         $.ExprWhile,
+        $.ExprDo,
         $.ExprBreak,
         $.ExprContinue,
         $.ExprSwitch,
         $.ExprReturn,
         $.ExprFn,
-        $.ExprExport,
+        $.ExprExportIdent,
         $.ExprImport,
         $.ExprTry,
         $.ExprThrow,
@@ -53,47 +54,27 @@ module.exports = grammar({
 
     Path: ($) => prec.left(3, seq($.ident, repeat(seq("::", $.ident)))),
 
-    LitStrTemplate: ($) =>
-      prec(
-        2,
-        seq(
-          repeat(
-            seq(optional($.lit_str), "${", $.LitStrTemplateInterpolation, "}"),
-          ),
-          $.lit_str,
-        ),
-      ),
-
-    LitStrTemplateInterpolation: ($) => repeat1($.Stmt),
-
     ExprLit: ($) => $.Lit,
 
-    Lit: ($) =>
-      choice(
-        $.lit_int,
-        $.lit_float,
-        $.lit_str,
-        $.lit_bool,
-        $.lit_char,
-        $.LitStrTemplate,
-      ),
+    Lit: ($) => choice($.lit_int, $.lit_float, $.lit_str, $.lit_bool),
 
     // TODO: unsure
-    ExprLet: ($) =>
+    ExprDeclareVar: ($) =>
       prec.right(
         2,
         seq(
-          "let",
+          optional("export"),
+          choice("let", "const"),
           field("name", $.ident),
           optional(seq("=", field("value", $.Expr))),
         ),
       ),
 
-    ExprConst: ($) =>
-      prec.right(
-        2,
-        seq("const", field("name", $.ident), "=", field("value", $.Expr)),
-      ),
+    // ExprConst: ($) =>
+    //   prec.right(
+    //     2,
+    //     seq("const", field("name", $.ident), "=", field("value", $.Expr)),
+    //   ),
 
     ExprBlock: ($) => seq("{", repeat($.Stmt), "}"),
 
@@ -222,6 +203,9 @@ module.exports = grammar({
 
     ExprWhile: ($) => seq("while", $.Expr, $.ExprBlock),
 
+    ExprDo: ($) =>
+      seq("do", $.ExprBlock, prec.right(seq(choice("while", "until"), $.Expr))),
+
     ExprBreak: ($) => prec.right(1, seq("break", optional($.Expr))),
 
     ExprContinue: ($) => "continue",
@@ -251,22 +235,18 @@ module.exports = grammar({
         optional("private"),
         "fn",
         field("fn_name", $.ident),
-        $.ParamList,
-        $.ExprBlock,
+        field("params", $.ParamList),
+        field("body", $.ExprBlock),
       ),
 
     ExprImport: ($) =>
       prec.right(2, seq("import", $.Expr, optional(seq("as", $.ident)))),
 
-    ExprExport: ($) => seq("export", $.ExportTarget),
+    ExprExportIdent: ($) =>
+      seq("export", prec.right(2, seq($.ident, optional(seq("as", $.ident))))),
 
     ExprTry: ($) =>
       seq("try", $.ExprBlock, "catch", optional($.ParamList), $.ExprBlock),
-
-    ExportTarget: ($) => choice($.ExprLet, $.ExprConst, $.ExportIdent),
-
-    ExportIdent: ($) =>
-      prec.right(2, seq($.ident, optional(seq("as", $.ident)))),
 
     Pat: ($) => choice($.PatTuple, $.PatIdent),
 
@@ -279,9 +259,7 @@ module.exports = grammar({
 
     PatIdent: ($) => $.ident,
 
-    RhaiDef: ($) => seq($.DefModuleDecl, repeat($.DefStmt)),
-
-    DefStmt: ($) => choice(";", seq($.DefItem, optional(";"))),
+    DefStmt: ($) => choice(";", prec.left(2, seq($.DefItem, optional(";")))),
 
     DefItem: ($) => seq(repeat($.Doc), $.Def),
 
@@ -301,7 +279,7 @@ module.exports = grammar({
     DefModuleInline: ($) => seq("module", $.ident, "{", repeat($.DefStmt), "}"),
 
     DefModule: ($) =>
-      seq("module", optional(choice($.ident, $.lit_str, "static"))),
+      prec.right(seq("module", optional(choice($.ident, $.lit_str, "static")))),
 
     DefImport: ($) => seq("import", $.Expr, optional(seq("as", $.ident))),
 
@@ -312,43 +290,7 @@ module.exports = grammar({
     DefOp: ($) =>
       seq(
         $.ident,
-        choice(
-          $.ident,
-          choice(
-            "||",
-            "&&",
-            "==",
-            "!=",
-            "<=",
-            ">=",
-            "<",
-            ">",
-            "+",
-            "*",
-            "**",
-            "-",
-            "/",
-            "%",
-            "<<",
-            ">>",
-            "^",
-            "|",
-            "&",
-            "=",
-            "+=",
-            "/=",
-            "*=",
-            "**=",
-            "%=",
-            ">>=",
-            "<<=",
-            "-=",
-            "|=",
-            "&=",
-            "^=",
-            ".",
-          ),
-        ),
+        choice($.ident, $.binop),
         $.TypeList,
         optional(seq("->", $.Type)),
         optional($.DefOpPrecedence),
@@ -442,13 +384,29 @@ module.exports = grammar({
     TypeArray: ($) =>
       seq("[", $.Type, repeat(seq(",", $.Type)), optional(","), "]"),
 
+    // string stuff
+
+    _lit_str_dquote: ($) =>
+      seq('"', optional(repeat1(choice(/([^"\\]|\\.)+/, "\\\n"))), '"'),
+    _lit_str_squote: ($) => /'([^'\\]|\\.)*'/,
+
+    _lit_str_backticks: ($) =>
+      seq(
+        "`",
+        repeat(choice($.str_template_str_content, $.str_template_expr)),
+        "`",
+      ),
+    str_template_str_content: ($) => choice(/([^\\`$]|\\.)+/, "$"),
+    str_template_expr: ($) => seq("${", repeat1($.Stmt), "}"),
+
     // Tokens
+
     ident: ($) => /[a-zA-Z_][a-zA-Z0-9_]*/,
     lit_int: ($) => /\d+/,
     lit_float: ($) => /\d+\.\d+/,
-    lit_str: ($) => /"([^"\\]|\\.)*"/,
+    lit_str: ($) =>
+      choice($._lit_str_dquote, $._lit_str_squote, $._lit_str_backticks),
     lit_bool: ($) => choice("true", "false"),
-    lit_char: ($) => /'([^'\\]|\\.)'/,
     comment_line_doc: ($) => /\/\/[^\n]*/,
     comment_block_doc: ($) => /\/\*\*[^*]*\*+(?:[^/*][^*]*\*+)*\//,
   },
