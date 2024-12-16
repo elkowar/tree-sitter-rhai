@@ -51,7 +51,7 @@ module.exports = grammar({
 
     ExprPath: ($) => $.Path,
 
-    Path: ($) => seq($.ident, repeat(seq("::", $.ident))),
+    Path: ($) => prec.left(3, seq($.ident, repeat(seq("::", $.ident)))),
 
     LitStrTemplate: ($) =>
       prec(
@@ -99,6 +99,46 @@ module.exports = grammar({
 
     ExprUnary: ($) => prec(2, seq(choice("+", "-", "!"), $.Expr)),
 
+    binop: ($) =>
+      choice(
+        "..",
+        "..=",
+        "||",
+        "&&",
+        "==",
+        "!=",
+        "<=",
+        ">=",
+        "<",
+        ">",
+        "+",
+        "*",
+        "**",
+        "-",
+        "/",
+        "%",
+        "<<",
+        ">>",
+        "^",
+        "|",
+        "&",
+        "=",
+        "+=",
+        "/=",
+        "*=",
+        "**=",
+        "%=",
+        ">>=",
+        "<<=",
+        "-=",
+        "|=",
+        "&=",
+        "^=",
+        // ".",
+        // "?.",
+        "??",
+      ),
+
     ExprDotAccess: ($) => prec.left(3, seq($.Expr, choice(".", "?."), $.Expr)),
     // TODO: very unsure about prec.right here, was because Expr = Expr = Expr
     ExprBinary: ($) =>
@@ -106,47 +146,7 @@ module.exports = grammar({
         1,
         seq(
           field("left", $.Expr),
-          field(
-            "operator",
-            choice(
-              "..",
-              "..=",
-              "||",
-              "&&",
-              "==",
-              "!=",
-              "<=",
-              ">=",
-              "<",
-              ">",
-              "+",
-              "*",
-              "**",
-              "-",
-              "/",
-              "%",
-              "<<",
-              ">>",
-              "^",
-              "|",
-              "&",
-              "=",
-              "+=",
-              "/=",
-              "*=",
-              "**=",
-              "%=",
-              ">>=",
-              "<<=",
-              "-=",
-              "|=",
-              "&=",
-              "^=",
-              // ".",
-              // "?.",
-              "??",
-            ),
-          ),
+          field("operator", $.binop),
           field("right", $.Expr),
         ),
       ),
@@ -247,7 +247,13 @@ module.exports = grammar({
     ExprReturn: ($) => prec.right(1, seq("return", optional($.Expr))),
 
     ExprFn: ($) =>
-      seq(optional("private"), "fn", $.ident, $.ParamList, $.ExprBlock),
+      seq(
+        optional("private"),
+        "fn",
+        field("fn_name", $.ident),
+        $.ParamList,
+        $.ExprBlock,
+      ),
 
     ExprImport: ($) =>
       prec.right(2, seq("import", $.Expr, optional(seq("as", $.ident)))),
@@ -443,7 +449,7 @@ module.exports = grammar({
     lit_str: ($) => /"([^"\\]|\\.)*"/,
     lit_bool: ($) => choice("true", "false"),
     lit_char: ($) => /'([^'\\]|\\.)'/,
-    comment_line_doc: ($) => /\/\/\/[^\n]*/,
+    comment_line_doc: ($) => /\/\/[^\n]*/,
     comment_block_doc: ($) => /\/\*\*[^*]*\*+(?:[^/*][^*]*\*+)*\//,
   },
 });

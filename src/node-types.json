@@ -233,140 +233,8 @@
         "required": true,
         "types": [
           {
-            "type": "!=",
-            "named": false
-          },
-          {
-            "type": "%",
-            "named": false
-          },
-          {
-            "type": "%=",
-            "named": false
-          },
-          {
-            "type": "&",
-            "named": false
-          },
-          {
-            "type": "&&",
-            "named": false
-          },
-          {
-            "type": "&=",
-            "named": false
-          },
-          {
-            "type": "*",
-            "named": false
-          },
-          {
-            "type": "**",
-            "named": false
-          },
-          {
-            "type": "**=",
-            "named": false
-          },
-          {
-            "type": "*=",
-            "named": false
-          },
-          {
-            "type": "+",
-            "named": false
-          },
-          {
-            "type": "+=",
-            "named": false
-          },
-          {
-            "type": "-",
-            "named": false
-          },
-          {
-            "type": "-=",
-            "named": false
-          },
-          {
-            "type": "..",
-            "named": false
-          },
-          {
-            "type": "..=",
-            "named": false
-          },
-          {
-            "type": "/",
-            "named": false
-          },
-          {
-            "type": "/=",
-            "named": false
-          },
-          {
-            "type": "<",
-            "named": false
-          },
-          {
-            "type": "<<",
-            "named": false
-          },
-          {
-            "type": "<<=",
-            "named": false
-          },
-          {
-            "type": "<=",
-            "named": false
-          },
-          {
-            "type": "=",
-            "named": false
-          },
-          {
-            "type": "==",
-            "named": false
-          },
-          {
-            "type": ">",
-            "named": false
-          },
-          {
-            "type": ">=",
-            "named": false
-          },
-          {
-            "type": ">>",
-            "named": false
-          },
-          {
-            "type": ">>=",
-            "named": false
-          },
-          {
-            "type": "??",
-            "named": false
-          },
-          {
-            "type": "^",
-            "named": false
-          },
-          {
-            "type": "^=",
-            "named": false
-          },
-          {
-            "type": "|",
-            "named": false
-          },
-          {
-            "type": "|=",
-            "named": false
-          },
-          {
-            "type": "||",
-            "named": false
+            "type": "binop",
+            "named": true
           }
         ]
       },
@@ -516,7 +384,18 @@
   {
     "type": "ExprFn",
     "named": true,
-    "fields": {},
+    "fields": {
+      "fn_name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "ident",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
       "required": true,
@@ -527,10 +406,6 @@
         },
         {
           "type": "ParamList",
-          "named": true
-        },
-        {
-          "type": "ident",
           "named": true
         }
       ]
@@ -1125,6 +1000,11 @@
         }
       ]
     }
+  },
+  {
+    "type": "binop",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "lit_bool",

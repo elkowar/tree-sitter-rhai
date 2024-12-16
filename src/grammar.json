@@ -211,29 +211,33 @@
       "name": "Path"
     },
     "Path": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "ident"
-        },
-        {
-          "type": "REPEAT",
-          "content": {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "STRING",
-                "value": "::"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "ident"
-              }
-            ]
+      "type": "PREC_LEFT",
+      "value": 3,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "ident"
+          },
+          {
+            "type": "REPEAT",
+            "content": {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "::"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "ident"
+                }
+              ]
+            }
           }
-        }
-      ]
+        ]
+      }
     },
     "LitStrTemplate": {
       "type": "PREC",
@@ -449,6 +453,147 @@
         ]
       }
     },
+    "binop": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": ".."
+        },
+        {
+          "type": "STRING",
+          "value": "..="
+        },
+        {
+          "type": "STRING",
+          "value": "||"
+        },
+        {
+          "type": "STRING",
+          "value": "&&"
+        },
+        {
+          "type": "STRING",
+          "value": "=="
+        },
+        {
+          "type": "STRING",
+          "value": "!="
+        },
+        {
+          "type": "STRING",
+          "value": "<="
+        },
+        {
+          "type": "STRING",
+          "value": ">="
+        },
+        {
+          "type": "STRING",
+          "value": "<"
+        },
+        {
+          "type": "STRING",
+          "value": ">"
+        },
+        {
+          "type": "STRING",
+          "value": "+"
+        },
+        {
+          "type": "STRING",
+          "value": "*"
+        },
+        {
+          "type": "STRING",
+          "value": "**"
+        },
+        {
+          "type": "STRING",
+          "value": "-"
+        },
+        {
+          "type": "STRING",
+          "value": "/"
+        },
+        {
+          "type": "STRING",
+          "value": "%"
+        },
+        {
+          "type": "STRING",
+          "value": "<<"
+        },
+        {
+          "type": "STRING",
+          "value": ">>"
+        },
+        {
+          "type": "STRING",
+          "value": "^"
+        },
+        {
+          "type": "STRING",
+          "value": "|"
+        },
+        {
+          "type": "STRING",
+          "value": "&"
+        },
+        {
+          "type": "STRING",
+          "value": "="
+        },
+        {
+          "type": "STRING",
+          "value": "+="
+        },
+        {
+          "type": "STRING",
+          "value": "/="
+        },
+        {
+          "type": "STRING",
+          "value": "*="
+        },
+        {
+          "type": "STRING",
+          "value": "**="
+        },
+        {
+          "type": "STRING",
+          "value": "%="
+        },
+        {
+          "type": "STRING",
+          "value": ">>="
+        },
+        {
+          "type": "STRING",
+          "value": "<<="
+        },
+        {
+          "type": "STRING",
+          "value": "-="
+        },
+        {
+          "type": "STRING",
+          "value": "|="
+        },
+        {
+          "type": "STRING",
+          "value": "&="
+        },
+        {
+          "type": "STRING",
+          "value": "^="
+        },
+        {
+          "type": "STRING",
+          "value": "??"
+        }
+      ]
+    },
     "ExprDotAccess": {
       "type": "PREC_LEFT",
       "value": 3,
@@ -497,145 +642,8 @@
             "type": "FIELD",
             "name": "operator",
             "content": {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "STRING",
-                  "value": ".."
-                },
-                {
-                  "type": "STRING",
-                  "value": "..="
-                },
-                {
-                  "type": "STRING",
-                  "value": "||"
-                },
-                {
-                  "type": "STRING",
-                  "value": "&&"
-                },
-                {
-                  "type": "STRING",
-                  "value": "=="
-                },
-                {
-                  "type": "STRING",
-                  "value": "!="
-                },
-                {
-                  "type": "STRING",
-                  "value": "<="
-                },
-                {
-                  "type": "STRING",
-                  "value": ">="
-                },
-                {
-                  "type": "STRING",
-                  "value": "<"
-                },
-                {
-                  "type": "STRING",
-                  "value": ">"
-                },
-                {
-                  "type": "STRING",
-                  "value": "+"
-                },
-                {
-                  "type": "STRING",
-                  "value": "*"
-                },
-                {
-                  "type": "STRING",
-                  "value": "**"
-                },
-                {
-                  "type": "STRING",
-                  "value": "-"
-                },
-                {
-                  "type": "STRING",
-                  "value": "/"
-                },
-                {
-                  "type": "STRING",
-                  "value": "%"
-                },
-                {
-                  "type": "STRING",
-                  "value": "<<"
-                },
-                {
-                  "type": "STRING",
-                  "value": ">>"
-                },
-                {
-                  "type": "STRING",
-                  "value": "^"
-                },
-                {
-                  "type": "STRING",
-                  "value": "|"
-                },
-                {
-                  "type": "STRING",
-                  "value": "&"
-                },
-                {
-                  "type": "STRING",
-                  "value": "="
-                },
-                {
-                  "type": "STRING",
-                  "value": "+="
-                },
-                {
-                  "type": "STRING",
-                  "value": "/="
-                },
-                {
-                  "type": "STRING",
-                  "value": "*="
-                },
-                {
-                  "type": "STRING",
-                  "value": "**="
-                },
-                {
-                  "type": "STRING",
-                  "value": "%="
-                },
-                {
-                  "type": "STRING",
-                  "value": ">>="
-                },
-                {
-                  "type": "STRING",
-                  "value": "<<="
-                },
-                {
-                  "type": "STRING",
-                  "value": "-="
-                },
-                {
-                  "type": "STRING",
-                  "value": "|="
-                },
-                {
-                  "type": "STRING",
-                  "value": "&="
-                },
-                {
-                  "type": "STRING",
-                  "value": "^="
-                },
-                {
-                  "type": "STRING",
-                  "value": "??"
-                }
-              ]
+              "type": "SYMBOL",
+              "name": "binop"
             }
           },
           {
@@ -1390,8 +1398,12 @@
           "value": "fn"
         },
         {
-          "type": "SYMBOL",
-          "name": "ident"
+          "type": "FIELD",
+          "name": "fn_name",
+          "content": {
+            "type": "SYMBOL",
+            "name": "ident"
+          }
         },
         {
           "type": "SYMBOL",
@@ -2725,7 +2737,7 @@
     },
     "comment_line_doc": {
       "type": "PATTERN",
-      "value": "\\/\\/\\/[^\\n]*"
+      "value": "\\/\\/[^\\n]*"
     },
     "comment_block_doc": {
       "type": "PATTERN",

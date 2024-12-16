@@ -1,4 +1,5 @@
 {
+
   "grammars": [
     {
       "name": "rhai",
@@ -7,7 +8,8 @@
       "file-types": [
         ".rhai"
       ],
-      "injection-regex": "^rhai$"
+      "injection-regex": "^rhai$",
+      "highlights": "queries/highlights.scm"
     }
   ],
   "metadata": {
@@ -25,11 +27,11 @@
     }
   },
   "bindings": {
-    "c": true,
-    "go": true,
-    "node": true,
-    "python": true,
-    "rust": true,
-    "swift": true
+    "c": false,
+    "go": false,
+    "node": false,
+    "python": false,
+    "rust": false,
+    "swift": false
   }
 }
