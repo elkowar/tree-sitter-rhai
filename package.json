@@ -1,6 +1,6 @@
 {
   "name": "tree-sitter-rhai",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Tree sitter grammar for the Rhai scripting language",
   "repository": "https://github.com/elkowar/tree-sitter-rhai",
   "license": "MIT",
