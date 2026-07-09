@@ -1,5 +1,548 @@
-===================
-Expression
-===================
+==================
+Precedence and associativity
+==================
 
-5+2
+2 * 3 + 1;
+1 - 2 - 3;
+a = b = c;
+2 ** 3 ** 4;
+x || y && z;
+1 .. 10 + 1;
+
+---
+
+(Rhai
+  (Stmt
+    (Item
+      (Expr
+        (ExprBinary
+          (Expr
+            (ExprBinary
+              (Expr
+                (ExprLit
+                  (Lit
+                    (lit_int))))
+              (binop)
+              (Expr
+                (ExprLit
+                  (Lit
+                    (lit_int))))))
+          (binop)
+          (Expr
+            (ExprLit
+              (Lit
+                (lit_int))))))))
+  (Stmt
+    (Item
+      (Expr
+        (ExprBinary
+          (Expr
+            (ExprBinary
+              (Expr
+                (ExprLit
+                  (Lit
+                    (lit_int))))
+              (binop)
+              (Expr
+                (ExprLit
+                  (Lit
+                    (lit_int))))))
+          (binop)
+          (Expr
+            (ExprLit
+              (Lit
+                (lit_int))))))))
+  (Stmt
+    (Item
+      (Expr
+        (ExprBinary
+          (Expr
+            (ExprPath
+              (Path
+                (ident))))
+          (binop)
+          (Expr
+            (ExprBinary
+              (Expr
+                (ExprPath
+                  (Path
+                    (ident))))
+              (binop)
+              (Expr
+                (ExprPath
+                  (Path
+                    (ident))))))))))
+  (Stmt
+    (Item
+      (Expr
+        (ExprBinary
+          (Expr
+            (ExprLit
+              (Lit
+                (lit_int))))
+          (binop)
+          (Expr
+            (ExprBinary
+              (Expr
+                (ExprLit
+                  (Lit
+                    (lit_int))))
+              (binop)
+              (Expr
+                (ExprLit
+                  (Lit
+                    (lit_int))))))))))
+  (Stmt
+    (Item
+      (Expr
+        (ExprBinary
+          (Expr
+            (ExprPath
+              (Path
+                (ident))))
+          (binop)
+          (Expr
+            (ExprBinary
+              (Expr
+                (ExprPath
+                  (Path
+                    (ident))))
+              (binop)
+              (Expr
+                (ExprPath
+                  (Path
+                    (ident))))))))))
+  (Stmt
+    (Item
+      (Expr
+        (ExprBinary
+          (Expr
+            (ExprLit
+              (Lit
+                (lit_int))))
+          (binop)
+          (Expr
+            (ExprBinary
+              (Expr
+                (ExprLit
+                  (Lit
+                    (lit_int))))
+              (binop)
+              (Expr
+                (ExprLit
+                  (Lit
+                    (lit_int)))))))))))
+
+==================
+Literals
+==================
+
+10_00;
+1_2_3;
+0xFF;
+0xF_F;
+1.5e3;
+1e10;
+true;
+false;
+'X';
+'\n';
+"\u{1234}";
+`hello ${name}`;
+
+---
+
+(Rhai
+  (Stmt
+    (Item
+      (Expr
+        (ExprLit
+          (Lit
+            (lit_int))))))
+  (Stmt
+    (Item
+      (Expr
+        (ExprLit
+          (Lit
+            (lit_int))))))
+  (Stmt
+    (Item
+      (Expr
+        (ExprLit
+          (Lit
+            (lit_int))))))
+  (Stmt
+    (Item
+      (Expr
+        (ExprLit
+          (Lit
+            (lit_int))))))
+  (Stmt
+    (Item
+      (Expr
+        (ExprLit
+          (Lit
+            (lit_float))))))
+  (Stmt
+    (Item
+      (Expr
+        (ExprLit
+          (Lit
+            (lit_float))))))
+  (Stmt
+    (Item
+      (Expr
+        (ExprLit
+          (Lit
+            (lit_bool))))))
+  (Stmt
+    (Item
+      (Expr
+        (ExprLit
+          (Lit
+            (lit_bool))))))
+  (Stmt
+    (Item
+      (Expr
+        (ExprLit
+          (Lit
+            (lit_char))))))
+  (Stmt
+    (Item
+      (Expr
+        (ExprLit
+          (Lit
+            (lit_char))))))
+  (Stmt
+    (Item
+      (Expr
+        (ExprLit
+          (Lit
+            (lit_str))))))
+  (Stmt
+    (Item
+      (Expr
+        (ExprLit
+          (Lit
+            (lit_str
+              (str_template_str_content)
+              (str_template_expr
+                (Stmt
+                  (Item
+                    (Expr
+                      (ExprPath
+                        (Path
+                          (ident))))))))))))))
+
+==================
+Membership
+==================
+
+if x in arr {}
+for item in arr {}
+
+---
+
+(Rhai
+  (Stmt
+    (Item
+      (Expr
+        (ExprIf
+          (Expr
+            (ExprBinary
+              (Expr
+                (ExprPath
+                  (Path
+                    (ident))))
+              (binop)
+              (Expr
+                (ExprPath
+                  (Path
+                    (ident))))))
+          (ExprBlock)))))
+  (Stmt
+    (Item
+      (Expr
+        (ExprFor
+          (Pat
+            (PatIdent
+              (ident)))
+          (Expr
+            (ExprPath
+              (Path
+                (ident))))
+          (ExprBlock))))))
+
+==================
+Closures and calls
+==================
+
+let add = |x, y| x + y;
+add(1, 2);
+
+---
+
+(Rhai
+  (Stmt
+    (Item
+      (Expr
+        (ExprDeclareVar
+          (ident)
+          (Expr
+            (ExprClosure
+              (ClosureParamList
+                (Param
+                  (ident))
+                (Param
+                  (ident)))
+              (Expr
+                (ExprBinary
+                  (Expr
+                    (ExprPath
+                      (Path
+                        (ident))))
+                  (binop)
+                  (Expr
+                    (ExprPath
+                      (Path
+                        (ident))))))))))))
+  (Stmt
+    (Item
+      (Expr
+        (ExprCall
+          (Expr
+            (ExprPath
+              (Path
+                (ident))))
+          (ArgList
+            (Expr
+              (ExprLit
+                (Lit
+                  (lit_int))))
+            (Expr
+              (ExprLit
+                (Lit
+                  (lit_int))))))))))
+
+==================
+Switch and try
+==================
+
+switch value {
+  1 => "one",
+  x if x > 1 => "many",
+  _ => "other",
+};
+
+try {
+  throw "failed";
+} catch (err) {
+  err;
+}
+
+---
+
+(Rhai
+  (Stmt
+    (Item
+      (Expr
+        (ExprSwitch
+          (Expr
+            (ExprPath
+              (Path
+                (ident))))
+          (SwitchArmList
+            (SwitchArm
+              (Expr
+                (ExprLit
+                  (Lit
+                    (lit_int))))
+              (Expr
+                (ExprLit
+                  (Lit
+                    (lit_str)))))
+            (SwitchArm
+              (Expr
+                (ExprPath
+                  (Path
+                    (ident))))
+              (SwitchArmCondition
+                (Expr
+                  (ExprBinary
+                    (Expr
+                      (ExprPath
+                        (Path
+                          (ident))))
+                    (binop)
+                    (Expr
+                      (ExprLit
+                        (Lit
+                          (lit_int)))))))
+              (Expr
+                (ExprLit
+                  (Lit
+                    (lit_str)))))
+            (SwitchArm
+              (Expr
+                (ExprLit
+                  (Lit
+                    (lit_str))))))))))
+  (Stmt
+    (Item
+      (Expr
+        (ExprTry
+          (ExprBlock
+            (Stmt
+              (Item
+                (Expr
+                  (ExprThrow
+                    (Expr
+                      (ExprLit
+                        (Lit
+                          (lit_str)))))))))
+          (ParamList
+            (Param
+              (ident)))
+          (ExprBlock
+            (Stmt
+              (Item
+                (Expr
+                  (ExprPath
+                    (Path
+                      (ident))))))))))))
+
+==================
+Loops
+==================
+
+loop { break; }
+while ready { continue; }
+do { count += 1; } while count < 10;
+do { count -= 1; } until count == 0;
+
+---
+
+(Rhai
+  (Stmt
+    (Item
+      (Expr
+        (ExprLoop
+          (ExprBlock
+            (Stmt
+              (Item
+                (Expr
+                  (ExprBreak)))))))))
+  (Stmt
+    (Item
+      (Expr
+        (ExprWhile
+          (Expr
+            (ExprPath
+              (Path
+                (ident))))
+          (ExprBlock
+            (Stmt
+              (Item
+                (Expr
+                  (ExprContinue)))))))))
+  (Stmt
+    (Item
+      (Expr
+        (ExprDo
+          (ExprBlock
+            (Stmt
+              (Item
+                (Expr
+                  (ExprBinary
+                    (Expr
+                      (ExprPath
+                        (Path
+                          (ident))))
+                    (binop)
+                    (Expr
+                      (ExprLit
+                        (Lit
+                          (lit_int)))))))))
+          (Expr
+            (ExprBinary
+              (Expr
+                (ExprPath
+                  (Path
+                    (ident))))
+              (binop)
+              (Expr
+                (ExprLit
+                  (Lit
+                    (lit_int))))))))))
+  (Stmt
+    (Item
+      (Expr
+        (ExprDo
+          (ExprBlock
+            (Stmt
+              (Item
+                (Expr
+                  (ExprBinary
+                    (Expr
+                      (ExprPath
+                        (Path
+                          (ident))))
+                    (binop)
+                    (Expr
+                      (ExprLit
+                        (Lit
+                          (lit_int)))))))))
+          (Expr
+            (ExprBinary
+              (Expr
+                (ExprPath
+                  (Path
+                    (ident))))
+              (binop)
+              (Expr
+                (ExprLit
+                  (Lit
+                    (lit_int)))))))))))
+
+==================
+Imports exports and objects
+==================
+
+import "module" as module;
+export value as renamed;
+#{ name: "rhai", version: 1 };
+
+---
+
+(Rhai
+  (Stmt
+    (Item
+      (Expr
+        (ExprImport
+          (Expr
+            (ExprLit
+              (Lit
+                (lit_str))))
+          (ident)))))
+  (Stmt
+    (Item
+      (Expr
+        (ExprExportIdent
+          (ident)
+          (ident)))))
+  (Stmt
+    (Item
+      (Expr
+        (ExprObject
+          (ObjectField
+            (ident)
+            (Expr
+              (ExprLit
+                (Lit
+                  (lit_str)))))
+          (ObjectField
+            (ident)
+            (Expr
+              (ExprLit
+                (Lit
+                  (lit_int))))))))))

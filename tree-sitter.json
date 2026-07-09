@@ -23,7 +23,7 @@
       }
     ],
     "links": {
-      "repository": "https://github.com/tree-sitter/tree-sitter-rhai"
+      "repository": "https://github.com/elkowar/tree-sitter-rhai"
     }
   },
   "bindings": {

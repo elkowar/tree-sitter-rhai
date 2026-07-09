@@ -736,6 +736,10 @@
           "named": true
         },
         {
+          "type": "lit_char",
+          "named": true
+        },
+        {
           "type": "lit_float",
           "named": true
         },
@@ -960,12 +964,17 @@
     }
   },
   {
-    "type": "binop",
+    "type": "lit_bool",
     "named": true,
     "fields": {}
   },
   {
-    "type": "lit_bool",
+    "type": "lit_float",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "lit_int",
     "named": true,
     "fields": {}
   },
@@ -1013,10 +1022,6 @@
     "named": false
   },
   {
-    "type": "!=",
-    "named": false
-  },
-  {
     "type": "\"",
     "named": false
   },
@@ -1033,26 +1038,6 @@
     "named": false
   },
   {
-    "type": "%",
-    "named": false
-  },
-  {
-    "type": "%=",
-    "named": false
-  },
-  {
-    "type": "&",
-    "named": false
-  },
-  {
-    "type": "&&",
-    "named": false
-  },
-  {
-    "type": "&=",
-    "named": false
-  },
-  {
     "type": "(",
     "named": false
   },
@@ -1061,27 +1046,7 @@
     "named": false
   },
   {
-    "type": "*",
-    "named": false
-  },
-  {
-    "type": "**",
-    "named": false
-  },
-  {
-    "type": "**=",
-    "named": false
-  },
-  {
-    "type": "*=",
-    "named": false
-  },
-  {
     "type": "+",
-    "named": false
-  },
-  {
-    "type": "+=",
     "named": false
   },
   {
@@ -1093,27 +1058,7 @@
     "named": false
   },
   {
-    "type": "-=",
-    "named": false
-  },
-  {
     "type": ".",
-    "named": false
-  },
-  {
-    "type": "..",
-    "named": false
-  },
-  {
-    "type": "..=",
-    "named": false
-  },
-  {
-    "type": "/",
-    "named": false
-  },
-  {
-    "type": "/=",
     "named": false
   },
   {
@@ -1129,27 +1074,7 @@
     "named": false
   },
   {
-    "type": "<",
-    "named": false
-  },
-  {
-    "type": "<<",
-    "named": false
-  },
-  {
-    "type": "<<=",
-    "named": false
-  },
-  {
-    "type": "<=",
-    "named": false
-  },
-  {
     "type": "=",
-    "named": false
-  },
-  {
-    "type": "==",
     "named": false
   },
   {
@@ -1157,27 +1082,7 @@
     "named": false
   },
   {
-    "type": ">",
-    "named": false
-  },
-  {
-    "type": ">=",
-    "named": false
-  },
-  {
-    "type": ">>",
-    "named": false
-  },
-  {
-    "type": ">>=",
-    "named": false
-  },
-  {
     "type": "?.",
-    "named": false
-  },
-  {
-    "type": "??",
     "named": false
   },
   {
@@ -1201,14 +1106,6 @@
     "named": false
   },
   {
-    "type": "^",
-    "named": false
-  },
-  {
-    "type": "^=",
-    "named": false
-  },
-  {
     "type": "_",
     "named": false
   },
@@ -1221,6 +1118,10 @@
     "named": false
   },
   {
+    "type": "binop",
+    "named": true
+  },
+  {
     "type": "break",
     "named": false
   },
@@ -1229,7 +1130,15 @@
     "named": false
   },
   {
+    "type": "comment_block",
+    "named": true
+  },
+  {
     "type": "comment_block_doc",
+    "named": true
+  },
+  {
+    "type": "comment_line",
     "named": true
   },
   {
@@ -1285,11 +1194,7 @@
     "named": false
   },
   {
-    "type": "lit_float",
-    "named": true
-  },
-  {
-    "type": "lit_int",
+    "type": "lit_char",
     "named": true
   },
   {
@@ -1334,14 +1239,6 @@
   },
   {
     "type": "|",
-    "named": false
-  },
-  {
-    "type": "|=",
-    "named": false
-  },
-  {
-    "type": "||",
     "named": false
   },
   {

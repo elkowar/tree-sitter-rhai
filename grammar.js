@@ -1,20 +1,52 @@
 /// <reference types="tree-sitter-cli/dsl" />
 // @ts-check
 
+const PREC = {
+  assignment: 1,
+  range: 2,
+  or: 3,
+  and: 4,
+  compare: 5,
+  bit_or: 6,
+  bit_xor: 7,
+  bit_and: 8,
+  shift: 9,
+  add: 10,
+  multiply: 11,
+  exponent: 12,
+  unary: 13,
+  call: 14,
+  member: 15,
+};
+
+function binary($, operator, precedence, associativity = "left") {
+  const applyPrecedence = associativity === "right" ? prec.right : prec.left;
+
+  return applyPrecedence(
+    precedence,
+    seq(
+      field("left", $.Expr),
+      field("operator", alias(operator, $.binop)),
+      field("right", $.Expr),
+    ),
+  );
+}
+
 module.exports = grammar({
   name: "rhai",
 
-  extras: ($) => [/\s/, $.comment_line_doc, $.comment_block_doc],
+  word: ($) => $.ident,
+
+  extras: ($) => [/\s/, $.comment_line, $.comment_block],
 
   rules: {
     Rhai: ($) => seq(repeat($.Stmt)),
-    RhaiDef: ($) => seq($.DefModuleDecl, repeat($.DefStmt)),
 
-    Item: ($) => prec(2, seq(repeat($.Doc), $.Expr)),
+    Item: ($) => seq(repeat($.Doc), $.Expr),
 
     Doc: ($) => choice($.comment_line_doc, $.comment_block_doc),
 
-    Stmt: ($) => choice(";", prec.right(2, seq($.Item, optional(";")))),
+    Stmt: ($) => choice(";", prec.right(seq($.Item, optional(";")))),
 
     Expr: ($) =>
       choice(
@@ -57,10 +89,9 @@ module.exports = grammar({
     ExprLit: ($) => $.Lit,
 
     Lit: ($) =>
-      choice($.lit_int, $.lit_float, $.lit_str, $.lit_bool, $.LitUnit),
+      choice($.lit_float, $.lit_int, $.lit_char, $.lit_str, $.lit_bool, $.LitUnit),
     LitUnit: ($) => seq("(", ")"),
 
-    // TODO: unsure
     ExprDeclareVar: ($) =>
       prec.right(
         2,
@@ -72,15 +103,9 @@ module.exports = grammar({
         ),
       ),
 
-    // ExprConst: ($) =>
-    //   prec.right(
-    //     2,
-    //     seq("const", field("name", $.ident), "=", field("value", $.Expr)),
-    //   ),
-
     ExprBlock: ($) => seq("{", repeat($.Stmt), "}"),
 
-    ExprUnary: ($) => prec(2, seq(choice("+", "-", "!"), $.Expr)),
+    ExprUnary: ($) => prec(PREC.unary, seq(choice("+", "-", "!"), $.Expr)),
 
     binop: ($) =>
       choice(
@@ -94,6 +119,7 @@ module.exports = grammar({
         ">=",
         "<",
         ">",
+        "in",
         "+",
         "*",
         "**",
@@ -122,16 +148,45 @@ module.exports = grammar({
         "??",
       ),
 
-    ExprDotAccess: ($) => prec.left(3, seq($.Expr, choice(".", "?."), $.Expr)),
-    // TODO: very unsure about prec.right here, was because Expr = Expr = Expr
+    ExprDotAccess: ($) =>
+      prec.left(PREC.member, seq($.Expr, choice(".", "?."), $.Expr)),
     ExprBinary: ($) =>
-      prec.right(
-        1,
-        seq(
-          field("left", $.Expr),
-          field("operator", $.binop),
-          field("right", $.Expr),
+      choice(
+        binary($, "**", PREC.exponent, "right"),
+        binary($, choice("*", "/", "%"), PREC.multiply),
+        binary($, choice("+", "-"), PREC.add),
+        binary($, choice("<<", ">>"), PREC.shift),
+        binary($, "&", PREC.bit_and),
+        binary($, "^", PREC.bit_xor),
+        binary($, "|", PREC.bit_or),
+        binary(
+          $,
+          choice("==", "!=", "<", "<=", ">", ">=", "in"),
+          PREC.compare,
         ),
+        binary($, "&&", PREC.and),
+        binary($, "||", PREC.or),
+        binary($, choice("..", "..="), PREC.range),
+        binary(
+          $,
+          choice(
+            "=",
+            "+=",
+            "-=",
+            "*=",
+            "/=",
+            "%=",
+            "**=",
+            "<<=",
+            ">>=",
+            "&=",
+            "|=",
+            "^=",
+          ),
+          PREC.assignment,
+          "right",
+        ),
+        binary($, "??", PREC.or),
       ),
 
     ExprParen: ($) => seq("(", $.Expr, ")"),
@@ -143,7 +198,8 @@ module.exports = grammar({
         "]",
       ),
 
-    ExprIndex: ($) => seq($.Expr, choice("[", "?["), $.Expr, "]"),
+    ExprIndex: ($) =>
+      prec.left(PREC.member, seq($.Expr, choice("[", "?["), $.Expr, "]")),
 
     ExprObject: ($) =>
       seq(
@@ -161,7 +217,7 @@ module.exports = grammar({
         field("value", $.Expr),
       ),
 
-    ExprCall: ($) => prec(3, seq(field("fn_name", $.Expr), $.ArgList)),
+    ExprCall: ($) => prec(PREC.call, seq(field("fn_name", $.Expr), $.ArgList)),
 
     ArgList: ($) =>
       seq(
@@ -263,136 +319,10 @@ module.exports = grammar({
 
     PatIdent: ($) => $.ident,
 
-    DefStmt: ($) => choice(";", prec.left(2, seq($.DefItem, optional(";")))),
-
-    DefItem: ($) => seq(repeat($.Doc), $.Def),
-
-    DefModuleDecl: ($) => seq(repeat($.Doc), $.DefModule),
-
-    Def: ($) =>
-      choice(
-        $.DefModuleInline,
-        $.DefImport,
-        $.DefConst,
-        $.DefLet,
-        $.DefFn,
-        $.DefOp,
-        $.DefType,
-      ),
-
-    DefModuleInline: ($) => seq("module", $.ident, "{", repeat($.DefStmt), "}"),
-
-    DefModule: ($) =>
-      prec.right(seq("module", optional(choice($.ident, $.lit_str, "static")))),
-
-    DefImport: ($) => seq("import", $.Expr, optional(seq("as", $.ident))),
-
-    DefConst: ($) => seq("const", $.ident, optional(seq(":", $.Type))),
-
-    DefLet: ($) => seq("let", $.ident, optional(seq(":", $.Type))),
-
-    DefOp: ($) =>
-      seq(
-        $.ident,
-        choice($.ident, $.binop),
-        $.TypeList,
-        optional(seq("->", $.Type)),
-        optional($.DefOpPrecedence),
-      ),
-
-    DefOpPrecedence: ($) =>
-      seq(
-        "with",
-        "(",
-        optional(seq($.lit_int, repeat(seq(",", $.lit_int)), optional(","))),
-        ")",
-      ),
-
-    DefType: ($) => seq($.ident, $.ident, "=", choice($.Type, "...")),
-
-    DefFn: ($) =>
-      seq(
-        "fn",
-        optional($.ident),
-        $.ident,
-        $.TypedParamList,
-        optional(seq("->", $.Type)),
-      ),
-
-    Type: ($) =>
-      choice(
-        $.TypeIdent,
-        $.TypeLit,
-        $.TypeObject,
-        $.TypeArray,
-        $.TypeTuple,
-        $.TypeUnknown,
-      ),
-
-    TypeIdent: ($) => seq($.ident, optional($.TypeGenerics)),
-
-    TypeGenerics: ($) =>
-      seq(
-        "<",
-        optional(seq($.Type, repeat(seq(",", $.Type)), optional(","))),
-        ">",
-      ),
-
-    TypeTuple: ($) =>
-      seq(
-        "(",
-        optional(seq($.Type, repeat(seq(",", $.Type)), optional(","))),
-        ")",
-      ),
-
-    TypeLit: ($) => $.Lit,
-
-    TypeObject: ($) =>
-      seq(
-        "#{",
-        optional(
-          seq(
-            $.TypeObjectField,
-            repeat(seq(",", $.TypeObjectField)),
-            optional(","),
-          ),
-        ),
-        "}",
-      ),
-
-    TypeObjectField: ($) =>
-      seq(repeat($.Doc), choice($.ident, $.Lit), ":", $.Type),
-
-    TypedParamList: ($) =>
-      seq(
-        "(",
-        optional(
-          seq($.TypedParam, repeat(seq(",", $.TypedParam)), optional(",")),
-        ),
-        ")",
-      ),
-
-    TypedParam: ($) => seq(optional("..."), $.ident, ":", $.Type),
-
-    TypeList: ($) =>
-      seq(
-        "(",
-        optional(seq($.Type, repeat(seq(",", $.Type)), optional(","))),
-        ")",
-      ),
-
-    TypeUnion: ($) => seq($.Type, "|", $.Type),
-
-    TypeUnknown: ($) => "?",
-
-    TypeArray: ($) =>
-      seq("[", $.Type, repeat(seq(",", $.Type)), optional(","), "]"),
-
     // string stuff
 
     _lit_str_dquote: ($) =>
       seq('"', optional(repeat1(choice(/([^"\\]|\\.)+/, "\\\n"))), '"'),
-    _lit_str_squote: ($) => /'([^'\\]|\\.)*'/,
 
     _lit_str_backticks: ($) =>
       seq(
@@ -406,12 +336,19 @@ module.exports = grammar({
     // Tokens
 
     ident: ($) => /[a-zA-Z_][a-zA-Z0-9_]*/,
-    lit_int: ($) => /\d+(_\d\d\d)*/,
-    lit_float: ($) => /\d+\.\d+/,
+    lit_int: ($) => choice(/\d[\d_]*/, /0[xX][0-9a-fA-F][0-9a-fA-F_]*/),
+    lit_float: ($) =>
+      choice(
+        /\d[\d_]*\.\d[\d_]*([eE][+-]?\d[\d_]*)?/,
+        /\d[\d_]*[eE][+-]?\d[\d_]*/,
+      ),
+    lit_char: ($) => /'([^'\\\n]|\\(x[0-9a-fA-F]{2}|u\{[0-9a-fA-F_]+\}|.))'/,
     lit_str: ($) =>
-      choice($._lit_str_dquote, $._lit_str_squote, $._lit_str_backticks),
+      choice($._lit_str_dquote, $._lit_str_backticks),
     lit_bool: ($) => choice("true", "false"),
-    comment_line_doc: ($) => /\/\/[^\n]*/,
-    comment_block_doc: ($) => /\/\*[^*]*\*+(?:[^/*][^*]*\*+)*\//,
+    comment_line: ($) => token(prec(-1, /\/\/[^\n]*/)),
+    comment_block: ($) => token(prec(-1, /\/\*[^*]*\*+(?:[^/*][^*]*\*+)*\//)),
+    comment_line_doc: ($) => token(prec(1, /\/\/\/[^\n]*/)),
+    comment_block_doc: ($) => token(prec(1, /\/\*\*[^*]*\*+(?:[^/*][^*]*\*+)*\//)),
   },
 });

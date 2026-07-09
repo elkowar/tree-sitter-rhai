@@ -8,14 +8,39 @@
 
 
 
-["return" "let" "const" "export" "if" "else" "fn" "private" "import" "as"] @keyword
-[".." "..=" "||" "&&" "==" "!=" "<=" ">=" "<" ">" "+" "*" "**" "-" "/" "%" "<<" ">>" "^" "|" "&" "=" "+=" "/=" "*=" "**=" "%=" ">>=" "<<=" "-=" "|=" "&=" "^=" "??"] @operator
+[
+  "as"
+  "break"
+  "catch"
+  "const"
+  "do"
+  "else"
+  "export"
+  "fn"
+  "for"
+  "if"
+  "import"
+  "in"
+  "let"
+  "loop"
+  "private"
+  "return"
+  "switch"
+  "throw"
+  "try"
+  "until"
+  "while"
+] @keyword
+
+(ExprContinue) @keyword
 
 (lit_bool) @boolean
 (lit_str) @string
+(lit_char) @character
 (lit_int) @number
 (lit_float) @number
 [(comment_line_doc) (comment_block_doc)] @comment.doc
+[(comment_line) (comment_block)] @comment
 
 (binop) @operator
 
