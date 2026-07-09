@@ -27,6 +27,6 @@
   "scripts": {
     "prestart": "tree-sitter build --wasm",
     "start": "tree-sitter playground",
-    "test": "tree-sitter test"
+    "test": "tree-sitter test && tree-sitter query --test queries/highlights.scm test/highlights/highlights.rhai && tree-sitter query --test queries/overrides.scm test/highlights/overrides.rhai"
   }
 }

@@ -134,6 +134,65 @@ x || y && z;
                     (lit_int)))))))))))
 
 ==================
+Unary and exponent precedence
+==================
+
+-2 ** 3;
+(-2) ** 3;
+!a == b;
+
+---
+
+(Rhai
+  (Stmt
+    (Item
+      (Expr
+        (ExprBinary
+          (Expr
+            (ExprUnary
+              (Expr
+                (ExprLit
+                  (Lit
+                    (lit_int))))))
+          (binop)
+          (Expr
+            (ExprLit
+              (Lit
+                (lit_int))))))))
+  (Stmt
+    (Item
+      (Expr
+        (ExprBinary
+          (Expr
+            (ExprParen
+              (Expr
+                (ExprUnary
+                  (Expr
+                    (ExprLit
+                      (Lit
+                        (lit_int))))))))
+          (binop)
+          (Expr
+            (ExprLit
+              (Lit
+                (lit_int))))))))
+  (Stmt
+    (Item
+      (Expr
+        (ExprBinary
+          (Expr
+            (ExprUnary
+              (Expr
+                (ExprPath
+                  (Path
+                    (ident))))))
+          (binop)
+          (Expr
+            (ExprPath
+              (Path
+                (ident)))))))))
+
+==================
 Literals
 ==================
 
@@ -235,6 +294,55 @@ false;
                           (ident))))))))))))))
 
 ==================
+Keyword and identifier boundaries
+==================
+
+let true_value = false;
+let false_value = true;
+let in_value = 1;
+let import_value = 2;
+
+---
+
+(Rhai
+  (Stmt
+    (Item
+      (Expr
+        (ExprDeclareVar
+          (ident)
+          (Expr
+            (ExprLit
+              (Lit
+                (lit_bool))))))))
+  (Stmt
+    (Item
+      (Expr
+        (ExprDeclareVar
+          (ident)
+          (Expr
+            (ExprLit
+              (Lit
+                (lit_bool))))))))
+  (Stmt
+    (Item
+      (Expr
+        (ExprDeclareVar
+          (ident)
+          (Expr
+            (ExprLit
+              (Lit
+                (lit_int))))))))
+  (Stmt
+    (Item
+      (Expr
+        (ExprDeclareVar
+          (ident)
+          (Expr
+            (ExprLit
+              (Lit
+                (lit_int)))))))))
+
+==================
 Membership
 ==================
 
@@ -323,6 +431,67 @@ add(1, 2);
               (ExprLit
                 (Lit
                   (lit_int))))))))))
+
+==================
+Member call and index precedence
+==================
+
+foo.bar(1)[0] + 2;
+foo?.bar?[i];
+
+---
+
+(Rhai
+  (Stmt
+    (Item
+      (Expr
+        (ExprBinary
+          (Expr
+            (ExprIndex
+              (Expr
+                (ExprCall
+                  (Expr
+                    (ExprDotAccess
+                      (Expr
+                        (ExprPath
+                          (Path
+                            (ident))))
+                      (Expr
+                        (ExprPath
+                          (Path
+                            (ident))))))
+                  (ArgList
+                    (Expr
+                      (ExprLit
+                        (Lit
+                          (lit_int)))))))
+              (Expr
+                (ExprLit
+                  (Lit
+                    (lit_int))))))
+          (binop)
+          (Expr
+            (ExprLit
+              (Lit
+                (lit_int))))))))
+  (Stmt
+    (Item
+      (Expr
+        (ExprIndex
+          (Expr
+            (ExprDotAccess
+              (Expr
+                (ExprPath
+                  (Path
+                    (ident))))
+              (Expr
+                (ExprPath
+                  (Path
+                    (ident))))))
+          (Expr
+            (ExprPath
+              (Path
+                (ident)))))))))
 
 ==================
 Switch and try
@@ -546,3 +715,60 @@ export value as renamed;
               (ExprLit
                 (Lit
                   (lit_int))))))))))
+
+==================
+Doc and regular comments
+==================
+
+/// Adds two values.
+fn add(x, y) {
+  // regular line comment
+  x + y;
+}
+
+/** Documented value. */
+let value = /* regular block comment */ 1;
+
+---
+
+(Rhai
+  (Stmt
+    (Item
+      (Doc
+        (comment_line_doc))
+      (Expr
+        (ExprFn
+          (FnDeclName
+            (ident))
+          (ParamList
+            (Param
+              (ident))
+            (Param
+              (ident)))
+          (ExprBlock
+            (comment_line)
+            (Stmt
+              (Item
+                (Expr
+                  (ExprBinary
+                    (Expr
+                      (ExprPath
+                        (Path
+                          (ident))))
+                    (binop)
+                    (Expr
+                      (ExprPath
+                        (Path
+                          (ident)))))))))))))
+  (Stmt
+    (Item
+      (Doc
+        (comment_block_doc))
+      (Expr
+        (ExprDeclareVar
+          (ident)
+          (comment_block)
+          (Expr
+            (ExprLit
+              (Lit
+                (lit_int)))))))))
